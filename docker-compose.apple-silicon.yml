@@ -1,0 +1,13 @@
+# Override para Mac com Apple Silicon (M1/M2/M3/M4) quando a VM do Finch/Docker
+# NAO tem Rosetta habilitado. O SQL Server 2019 trava sob emulacao QEMU, entao
+# aqui o banco roda no Azure SQL Edge (motor do SQL Server compilado para ARM).
+#
+# Atencao: o Azure SQL Edge foi descontinuado pela Microsoft em set/2025.
+# Serve para rodar o laboratorio, nao como referencia de producao.
+#
+# Uso:
+#   finch compose -f docker-compose.yml -f docker-compose.apple-silicon.yml up --build
+services:
+  sqlserver:
+    image: mcr.microsoft.com/azure-sql-edge:latest
+    platform: linux/arm64

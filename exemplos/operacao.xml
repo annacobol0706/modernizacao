@@ -1,0 +1,12 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:pag="http://ws.anycompany.com.br/pagamento/v1">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <pag:{{OPERACAO}}>
+         <requisicao>
+            <apiKey>{{API_KEY}}</apiKey>
+            <transacaoId>{{TRANSACAO_ID}}</transacaoId>
+         </requisicao>
+      </pag:{{OPERACAO}}>
+   </soapenv:Body>
+</soapenv:Envelope>
