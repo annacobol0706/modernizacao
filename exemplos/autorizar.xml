@@ -1,0 +1,19 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:pag="http://ws.anycompany.com.br/pagamento/v1">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <pag:autorizar>
+         <requisicao>
+            <apiKey>{{API_KEY}}</apiKey>
+            <pedidoId>{{PEDIDO}}</pedidoId>
+            <numeroCartao>{{CARTAO}}</numeroCartao>
+            <nomePortador>ANA TESTE</nomePortador>
+            <validade>12/30</validade>
+            <cvv>123</cvv>
+            <valor>{{VALOR}}</valor>
+            <moeda>BRL</moeda>
+            <capturaAutomatica>{{CAPTURA}}</capturaAutomatica>
+         </requisicao>
+      </pag:autorizar>
+   </soapenv:Body>
+</soapenv:Envelope>

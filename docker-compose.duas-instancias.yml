@@ -1,0 +1,37 @@
+# Reproduz a tentativa de fev/2025 de rodar duas instancias do Tomcat atras do balanceador
+# (ver docs/plataforma-hoje/07-incidentes.md, INC-2025-021).
+#
+# Para o efeito aparecer em minutos, a liquidacao roda a cada 2 minutos nas duas instancias.
+#
+# Uso:
+#   docker compose -f docker-compose.yml -f docker-compose.duas-instancias.yml up --build -d
+#   docker compose -f docker-compose.yml -f docker-compose.duas-instancias.yml exec simulador simulador dia-normal
+#
+# Backoffice pelo balanceador: http://localhost:8081/anycompany
+services:
+  app:
+    environment:
+      LIQUIDACAO_CRON: "0 0/2 * * * ?"
+
+  app2:
+    build: ./legacy-app
+    depends_on:
+      - sqlserver
+      - adquirente
+    environment:
+      DB_SENHA: ${MSSQL_SA_PASSWORD:?defina MSSQL_SA_PASSWORD no arquivo .env}
+      LIQUIDACAO_CRON: "0 0/2 * * * ?"
+
+  balanceador:
+    image: nginx:1.27-alpine
+    depends_on:
+      - app
+      - app2
+    volumes:
+      - ./balanceador/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    ports:
+      - "127.0.0.1:8081:80"
+
+  simulador:
+    environment:
+      ANYCOMPANY_URL: http://balanceador/anycompany

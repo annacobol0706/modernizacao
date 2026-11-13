@@ -1,0 +1,13 @@
+{
+  "request": {
+    "method": "POST",
+    "urlPath": "/adquirente/v1/capturar"
+  },
+  "response": {
+    "status": 200,
+    "headers": { "Content-Type": "application/xml; charset=UTF-8" },
+    "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><respostaAdquirente><codigo>00</codigo><mensagem>Captura realizada</mensagem><nsu>{{xPath request.body '/requisicaoCaptura/nsu/text()'}}</nsu></respostaAdquirente>",
+    "transformers": ["response-template"],
+    "delayDistribution": { "type": "lognormal", "median": 150, "sigma": 0.3 }
+  }
+}

@@ -1,0 +1,69 @@
+# AnyCompany - ambiente legado local
+# Uso: copie .env.example para .env, defina as senhas e rode
+#   finch compose up --build      (ou: docker compose up --build)
+#
+# Todas as portas sao publicadas so em 127.0.0.1. A aplicacao legada tem
+# vulnerabilidades conhecidas de proposito: nao exponha para a rede.
+name: anycompany
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    platform: linux/amd64
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: Developer
+      MSSQL_SA_PASSWORD: ${MSSQL_SA_PASSWORD:?defina MSSQL_SA_PASSWORD no arquivo .env}
+    ports:
+      - "127.0.0.1:1433:1433"
+    volumes:
+      - sqldata:/var/opt/mssql
+
+  db-init:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    platform: linux/amd64
+    depends_on:
+      - sqlserver
+    environment:
+      MSSQL_SA_PASSWORD: ${MSSQL_SA_PASSWORD:?defina MSSQL_SA_PASSWORD no arquivo .env}
+      BACKOFFICE_ADMIN_SENHA: ${BACKOFFICE_ADMIN_SENHA:?defina BACKOFFICE_ADMIN_SENHA no arquivo .env}
+    volumes:
+      - ./database:/scripts:ro
+    # remove CR do script caso o repositorio tenha sido clonado no Windows com CRLF
+    entrypoint: ["/bin/bash", "-c", "tr -d '\\r' < /scripts/init.sh > /tmp/init.sh && bash /tmp/init.sh"]
+    restart: "no"
+
+  adquirente:
+    image: wiremock/wiremock:3.9.2
+    command: ["--disable-banner", "--max-request-journal-entries", "5000"]
+    volumes:
+      - ./adquirente-simulada:/home/wiremock
+    ports:
+      - "127.0.0.1:8090:8080"
+
+  app:
+    build: ./legacy-app
+    depends_on:
+      - sqlserver
+      - adquirente
+    environment:
+      DB_SENHA: ${MSSQL_SA_PASSWORD:?defina MSSQL_SA_PASSWORD no arquivo .env}
+    ports:
+      - "127.0.0.1:8080:8080"
+
+  # Simulador de uso. Fica parado esperando comandos, por exemplo:
+  #   docker compose exec simulador simulador dia-normal
+  simulador:
+    build: ./simulador
+    depends_on:
+      - app
+    environment:
+      ANYCOMPANY_URL: http://app:8080/anycompany
+      ADQUIRENTE_ADMIN_URL: http://adquirente:8080/__admin
+      DB_HOST: sqlserver
+      MSSQL_SA_PASSWORD: ${MSSQL_SA_PASSWORD:?defina MSSQL_SA_PASSWORD no arquivo .env}
+      BACKOFFICE_ADMIN_SENHA: ${BACKOFFICE_ADMIN_SENHA:?defina BACKOFFICE_ADMIN_SENHA no arquivo .env}
+      TZ: America/Sao_Paulo
+
+volumes:
+  sqldata:

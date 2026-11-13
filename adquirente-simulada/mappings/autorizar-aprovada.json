@@ -1,0 +1,14 @@
+{
+  "priority": 10,
+  "request": {
+    "method": "POST",
+    "urlPath": "/adquirente/v1/autorizar"
+  },
+  "response": {
+    "status": 200,
+    "headers": { "Content-Type": "application/xml; charset=UTF-8" },
+    "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><respostaAdquirente><codigo>00</codigo><mensagem>Transacao autorizada</mensagem><codigoAutorizacao>{{randomValue length=6 type='NUMERIC'}}</codigoAutorizacao><nsu>{{randomValue length=9 type='NUMERIC'}}</nsu></respostaAdquirente>",
+    "transformers": ["response-template"],
+    "delayDistribution": { "type": "lognormal", "median": 250, "sigma": 0.4 }
+  }
+}

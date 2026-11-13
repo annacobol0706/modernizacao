@@ -1,0 +1,37 @@
+body { font-family: Verdana, Arial, sans-serif; font-size: 12px; margin: 0; background: #f2f2f2; color: #222; }
+.topo { background: #003366; color: #fff; padding: 10px 16px; }
+.topo a { color: #cde; margin-right: 14px; text-decoration: none; }
+.topo a:hover { text-decoration: underline; }
+.logo { font-size: 18px; font-weight: bold; margin-right: 30px; }
+.logo small { font-size: 10px; font-weight: normal; color: #9bc; }
+.usuario { float: right; }
+.conteudo { padding: 16px; }
+.rodape { padding: 10px 16px; color: #888; font-size: 10px; }
+h2 { color: #003366; margin-top: 0; }
+table { border-collapse: collapse; background: #fff; margin-bottom: 16px; }
+th, td { border: 1px solid #ccc; padding: 4px 8px; text-align: left; vertical-align: top; }
+th { background: #dde4ee; }
+table.detalhe th { width: 220px; }
+.num { text-align: right; }
+.mono { font-family: "Courier New", monospace; }
+.dica { color: #777; font-size: 11px; }
+.msg { padding: 8px; margin-bottom: 12px; border: 1px solid; }
+.msg.ok { background: #e6f4e6; border-color: #6a6; }
+.msg.erro { background: #fbe9e9; border-color: #c66; }
+.filtro { margin-bottom: 12px; }
+.totais { margin-bottom: 12px; }
+.total { display: inline-block; padding: 6px 10px; margin-right: 6px; background: #fff; border: 1px solid #ccc; color: #222; text-decoration: none; }
+.status { padding: 1px 6px; border-radius: 3px; background: #ddd; font-size: 11px; }
+.status-AUTORIZADA, .status-CAPTURADA { background: #cfe8cf; }
+.status-LIQUIDADA { background: #cde; }
+.status-NEGADA { background: #f3c6c6; }
+.status-EM_REVISAO, .status-PENDENTE { background: #fbe3a6; }
+.status-CANCELADA, .status-ESTORNADA { background: #e0e0e0; }
+.acoes form { display: inline; }
+button { cursor: pointer; }
+button.aprovar { background: #cfe8cf; }
+button.negar { background: #f3c6c6; }
+.login { width: 300px; margin: 60px auto; background: #fff; padding: 20px; border: 1px solid #ccc; }
+.login label { display: block; margin-bottom: 10px; }
+.login input { width: 100%; }
+.caixa { background: #fff; padding: 8px 12px; border: 1px solid #ccc; margin-bottom: 16px; display: inline-block; }
